@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+      annotations:
+        checksum/html: {{ .Values.message | sha256sum }}
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.30.8   # nginx.org Stable 版（11/25 查 Docker Hub 官方 image）
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: html
+          configMap:
+            name: hello-html
+

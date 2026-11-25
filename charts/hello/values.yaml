@@ -1,0 +1,5 @@
+replicas: 2
+message: "Hello from EKS v1"
+ingress:
+  enabled: false   # 第 7 週改 true
+
